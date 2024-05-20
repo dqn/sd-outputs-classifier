@@ -2,10 +2,8 @@ import ExifReader from "exifreader";
 import { mkdir, readdir, readFile, rename } from "fs/promises";
 import path from "path";
 
-const outDir = "out";
-
 function normalizeTag(tag: string[]): string {
-  return tag.join("-").replace(" ", "-");
+  return tag.join("-").replaceAll(/\s/g, "-");
 }
 
 async function main(): Promise<void> {
@@ -16,11 +14,13 @@ async function main(): Promise<void> {
   const tags = await readFile("./tags.txt", "utf-8").then((raw) =>
     raw
       .trim()
-      .split(/\n|\r|\r\n/)
+      .split(/\n|\r\n|\r/)
       .map((rawTag) =>
         rawTag.split(",").map((tag) => tag.trim().replace(/\s+/g, " "))
       )
   );
+
+  const outDir = path.dirname(dir);
 
   await Promise.all(
     tags.map((tag) => {

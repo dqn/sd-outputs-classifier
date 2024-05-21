@@ -21,6 +21,7 @@ async function main(): Promise<void> {
   );
 
   const outDir = path.dirname(dir);
+  const prefix = path.basename(dir);
 
   await Promise.all(
     tags.map((tag) => {
@@ -39,7 +40,7 @@ async function main(): Promise<void> {
         const normalizedTag = normalizeTag(tag);
         await rename(
           path.join(dir, file),
-          path.join(outDir, normalizedTag, file)
+          path.join(outDir, `${prefix}-${normalizedTag}`, file)
         );
         console.log(`${file} was classified to "${normalizedTag}"`);
       } else {

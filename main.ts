@@ -24,7 +24,8 @@ async function main(): Promise<void> {
 
   await Promise.all(
     tags.map((tag) => {
-      return mkdir(path.join(dir, normalizeTag(tag)), { recursive: true });
+      const outDir = path.join(dir, `${prefix}-${normalizeTag(tag)}`);
+      return mkdir(outDir, { recursive: true });
     })
   );
 

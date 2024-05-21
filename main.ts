@@ -20,12 +20,11 @@ async function main(): Promise<void> {
       )
   );
 
-  const outDir = path.dirname(dir);
   const prefix = path.basename(dir);
 
   await Promise.all(
     tags.map((tag) => {
-      return mkdir(path.join(outDir, normalizeTag(tag)), { recursive: true });
+      return mkdir(path.join(dir, normalizeTag(tag)), { recursive: true });
     })
   );
 
@@ -40,7 +39,7 @@ async function main(): Promise<void> {
         const normalizedTag = normalizeTag(tag);
         await rename(
           path.join(dir, file),
-          path.join(outDir, `${prefix}-${normalizedTag}`, file)
+          path.join(dir, `${prefix}-${normalizedTag}`, file)
         );
         console.log(`${file} was classified to "${normalizedTag}"`);
       } else {

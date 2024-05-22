@@ -16,9 +16,14 @@ async function main(): Promise<void> {
       .trim()
       .split(/\n|\r\n|\r/)
       .map((rawTag) =>
-        rawTag.split(",").map((tag) => tag.trim().replace(/\s+/g, " "))
+        rawTag.split(",").flatMap((tag) => {
+          const t = tag.trim().replace(/\s+/g, " ");
+          return t === "" ? [] : t;
+        })
       )
   );
+
+  console.log(tags);
 
   const prefix = path.basename(dir);
 
@@ -31,6 +36,10 @@ async function main(): Promise<void> {
 
   await Promise.all(
     files.map(async (file) => {
+      if (!file.endsWith(".png")) {
+        return;
+      }
+
       const exif = await ExifReader.load(path.join(dir, file));
       const params = exif.parameters.description;
 

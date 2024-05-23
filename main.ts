@@ -23,8 +23,6 @@ async function main(): Promise<void> {
       )
   );
 
-  console.log(tags);
-
   const prefix = path.basename(dir);
 
   await Promise.all(
